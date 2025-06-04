@@ -1,136 +1,44 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <title>字数统计器</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>字数统计器 - 工具宝</title>
   <style>
-    :root {
-      --bg-color: #f9f9fb;
-      --text-color: #333;
-      --box-bg: #fff;
-      --box-border: #ddd;
-      --highlight: #3498db;
-      --result-bg: #f0f3f5;
-    }
-
-    body.dark {
-      --bg-color: #1e1e1e;
-      --text-color: #eee;
-      --box-bg: #2c2c2c;
-      --box-border: #444;
-      --highlight: #4aa3f0;
-      --result-bg: #2e2e2e;
-    }
-
     body {
-      font-family: "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 2em 1em;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: var(--box-bg);
-      padding: 2em;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-      border: 1px solid var(--box-border);
-      position: relative;
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 3em auto;
+      padding: 1em;
+      background: #f9f9f9;
+      color: #333;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 1em;
     }
 
     textarea {
       width: 100%;
       height: 200px;
-      padding: 1em;
       font-size: 16px;
-      border: 1px solid var(--box-border);
-      border-radius: 8px;
-      background: var(--bg-color);
-      color: var(--text-color);
-      resize: vertical;
-    }
-
-    .buttons {
-      margin-top: 1em;
-      display: flex;
-      gap: 1em;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    button {
-      padding: 0.6em 1.2em;
-      font-size: 14px;
-      background: var(--highlight);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      opacity: 0.85;
-    }
-
-    #result {
-      margin-top: 1.5em;
       padding: 1em;
-      background: var(--result-bg);
-      border-left: 4px solid var(--highlight);
-      font-family: monospace;
-      white-space: pre-wrap;
-      border-radius: 8px;
-    }
-
-    .mode-toggle {
-      position: absolute;
-      top: 1em;
-      right: 1em;
-      font-size: 14px;
-      background: transparent;
-      color: var(--text-color);
-      border: 1px solid var(--box-border);
-      border-radius: 20px;
-      padding: 0.4em 0.8em;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .mode-toggle:hover {
-      background: var(--result-bg);
-    }
-
-    .toast {
-      position: fixed;
-      right: 20px;
-      bottom: 30px;
-      background: var(--highlight);
-      color: white;
-      padding: 0.8em 1.2em;
+      border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 14px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      z-index: 1000;
+      resize: vertical;
+      box-sizing: border-box;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
+    .result {
+      margin-top: 1.5em;
+      line-height: 1.6;
+      background: #fff;
+      padding: 1em;
+      border-radius: 6px;
+      border: 1px solid #ddd;
     }
 
-    footer {
+    .footer {
       margin-top: 2em;
       text-align: center;
       font-size: 13px;
@@ -139,89 +47,67 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <button class="mode-toggle" onclick="toggleDarkMode()">🌙 暗黑模式</button>
 
-    <h1>字数统计器</h1>
-
-    <textarea id="textInput" placeholder="请输入文本..." oninput="updateCount()"></textarea>
-
-    <div class="buttons">
-      <button onclick="clearText()">清空文本</button>
-      <button onclick="copyResult()">复制统计结果</button>
-    </div>
-
-    <div id="result">统计信息将显示在这里。</div>
-
-    <footer>
-      字数统计器 V1.3 ｜ © 2025 你的名字或网站名
-    </footer>
+  <div style="margin-bottom: 1em;">
+    <a href="/" style="text-decoration:none; font-size: 14px;">← 返回首页</a>
   </div>
 
-  <div id="toast" class="toast">已复制！</div>
+  <h1>字数统计器</h1>
+
+  <textarea id="text" placeholder="请输入文本..." oninput="analyzeText()"></textarea>
+
+  <div class="result" id="result">
+    <p>字数统计结果将显示在这里。</p>
+  </div>
+
+  <div class="footer">
+    工具宝 ｜ 字数统计器 V1.4 ｜ © 2025 gongjupal.com
+  </div>
 
   <script>
-    function updateCount() {
-      const text = document.getElementById("textInput").value;
-      const total = text.length;
-      const noSpace = text.replace(/\s/g, '').length;
-      const chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
-      const english = (text.match(/[a-zA-Z]/g) || []).length;
-      const digit = (text.match(/\d/g) || []).length;
-      const punctuation = (text.match(/[，。！？、“”‘’；：—…（）【】《》]/g) || []).length;
+    function analyzeText() {
+      const text = document.getElementById("text").value;
 
-      const result = `
-总字符数（含空格）：${total}
-总字符数（不含空格）：${noSpace}
-汉字数：${chinese}
-英文字母数：${english}
-数字数：${digit}
-标点符号数：${punctuation}
-      `.trim();
+      const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+      const englishWords = text.match(/\b[a-zA-Z]+\b/g) || [];
 
-      // 阅读时间估算
-      const chineseReadingTime = chinese / 500; // 分钟
-      const englishWords = english / 5;
-      const englishReadingTime = englishWords / 200;
-      const totalReadingTime = chineseReadingTime + englishReadingTime;
+      const chineseCount = chineseChars.length;
+      const englishCount = englishWords.length;
+      const totalCount = text.length;
 
-      const readingTimeInfo = `
-预计阅读时间：
-- 中文：${chineseReadingTime.toFixed(2)} 分钟
-- 英文：${englishReadingTime.toFixed(2)} 分钟
-- 合计：${totalReadingTime.toFixed(2)} 分钟
-`;
+      // 阅读时间（阅读速度）
+      const readTimeZh = chineseCount / 500;
+      const readTimeEn = englishCount / 200;
+      const readTotal = readTimeZh + readTimeEn;
 
-      document.getElementById("result").textContent = result + "\n\n" + readingTimeInfo;
+      // 朗读/说话时间（更慢）
+      const speechTimeZh = chineseCount / 200;
+      const speechTimeEn = englishCount / 130;
+      const speechTotal = speechTimeZh + speechTimeEn;
+
+      const formatTime = (min) =>
+        min < 0.5
+          ? "小于半分钟"
+          : min < 1
+          ? "约 1 分钟"
+          : "约 " + min.toFixed(2) + " 分钟";
+
+      const resultHtml = `
+        <p>总字数：${totalCount}</p>
+        <p>中文字符数：${chineseCount}</p>
+        <p>英文词数：${englishCount}</p>
+        <p><strong>预计阅读时间：</strong><br />
+        - 中文：${formatTime(readTimeZh)}<br />
+        - 英文：${formatTime(readTimeEn)}<br />
+        - 合计：${formatTime(readTotal)}</p>
+        <p><strong>预计朗读时间：</strong><br />
+        - 中文：${formatTime(speechTimeZh)}<br />
+        - 英文：${formatTime(speechTimeEn)}<br />
+        - 合计：${formatTime(speechTotal)}</p>
+      `;
+
+      document.getElementById("result").innerHTML = resultHtml;
     }
-
-    function clearText() {
-      document.getElementById("textInput").value = '';
-      updateCount();
-    }
-
-    function copyResult() {
-      const resultText = document.getElementById("result").textContent;
-      navigator.clipboard.writeText(resultText)
-        .then(() => showToast("统计结果已复制！"))
-        .catch(() => showToast("复制失败，请手动复制！"));
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById("toast");
-      toast.textContent = message;
-      toast.classList.add("show");
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 3000);
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark");
-    }
-
-    // 初始统计
-    updateCount();
   </script>
 </body>
 </html>

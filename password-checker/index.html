@@ -2,31 +2,16 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>密码强度检测器</title>
+  <title>密码强度检测器 - 工具宝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    :root {
-      --bg: #f9f9f9;
-      --text: #333;
-      --bar-bg: #ddd;
-      --footer: #888;
-    }
-
-    body.dark {
-      --bg: #1e1e1e;
-      --text: #eee;
-      --bar-bg: #444;
-      --footer: #aaa;
-    }
-
     body {
       font-family: Arial, sans-serif;
       max-width: 500px;
       margin: 3em auto;
       padding: 1em;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      background: #f9f9f9;
+      color: #333;
     }
 
     h1 {
@@ -46,14 +31,12 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       margin-top: 0.5em;
-      background: white;
-      color: var(--text);
     }
 
     .strength-bar {
       height: 10px;
       margin-top: 0.5em;
-      background: var(--bar-bg);
+      background: #ddd;
       border-radius: 4px;
       overflow: hidden;
     }
@@ -64,7 +47,7 @@
       transition: width 0.3s;
     }
 
-    .info {
+    .info, .entropy-info {
       margin-top: 0.8em;
       font-size: 14px;
     }
@@ -79,8 +62,8 @@
       margin-top: 1em;
       display: flex;
       gap: 1em;
-      align-items: center;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     button {
@@ -96,10 +79,31 @@
       opacity: 0.9;
     }
 
+    .toast {
+      visibility: hidden;
+      background: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 6px;
+      font-size: 14px;
+      z-index: 10;
+      transition: visibility 0s, opacity 0.5s ease;
+      opacity: 0;
+    }
+
+    .toast.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
     .privacy {
       margin-top: 2em;
       text-align: center;
-      color: var(--footer);
+      color: #888;
       font-size: 13px;
     }
 
@@ -107,30 +111,15 @@
       margin-top: 1em;
       text-align: center;
       font-size: 13px;
-      color: var(--footer);
-    }
-
-    .mode-toggle {
-      position: absolute;
-      top: 1em;
-      right: 1em;
-      font-size: 14px;
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--bar-bg);
-      border-radius: 20px;
-      padding: 0.4em 0.8em;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .mode-toggle:hover {
-      background: rgba(0,0,0,0.05);
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <button class="mode-toggle" onclick="toggleDarkMode()">🌙 暗黑模式</button>
+
+  <div style="margin-bottom: 1em;">
+    <a href="/" style="text-decoration:none; font-size: 14px;">← 返回首页</a>
+  </div>
 
   <h1>密码强度检测器</h1>
 
@@ -142,16 +131,20 @@
   </div>
 
   <div class="info" id="strengthText"></div>
+  <div class="entropy-info" id="entropyInfo"></div>
   <div class="suggestion" id="suggestion"></div>
 
   <div class="buttons">
     <label><input type="checkbox" onchange="toggleVisibility()"> 显示密码</label>
     <button onclick="clearPassword()">清空</button>
+    <button onclick="copyPassword()">复制密码</button>
   </div>
+
+  <div class="toast" id="toast">密码已复制！</div>
 
   <p class="privacy">本工具在本地运行，所有密码仅在您的浏览器中处理，绝不上传或存储。</p>
   <footer>
-    密码强度检测器 V1.4 ｜ © 2025 你的名字或网站名
+    工具宝 ｜ 密码强度检测器 V1.5 ｜ © 2025 gongjupal.com
   </footer>
 
   <script>
@@ -160,55 +153,55 @@
       const fill = document.getElementById("strengthFill");
       const text = document.getElementById("strengthText");
       const suggestion = document.getElementById("suggestion");
+      const entropyInfo = document.getElementById("entropyInfo");
 
       if (pwd.length === 0) {
         fill.style.width = "5%";
-        fill.style.background = "var(--bar-bg)";
+        fill.style.background = "#ddd";
         text.textContent = "";
+        entropyInfo.textContent = "";
         suggestion.textContent = "";
         return;
       }
 
       let score = 0;
       const suggestions = [];
+      let charsetSize = 0;
+
+      if (/[a-z]/.test(pwd)) { score++; charsetSize += 26; }
+      else suggestions.push("建议加入小写字母");
+
+      if (/[A-Z]/.test(pwd)) { score++; charsetSize += 26; }
+      else suggestions.push("建议加入大写字母");
+
+      if (/\d/.test(pwd)) { score++; charsetSize += 10; }
+      else suggestions.push("建议加入数字");
+
+      if (/[\W_]/.test(pwd)) { score++; charsetSize += 33; }
+      else suggestions.push("建议加入特殊符号");
 
       if (pwd.length >= 8) score++;
       else suggestions.push("建议密码至少 8 位");
-
-      if (/[a-z]/.test(pwd)) score++;
-      else suggestions.push("建议加入小写字母");
-
-      if (/[A-Z]/.test(pwd)) score++;
-      else suggestions.push("建议加入大写字母");
-
-      if (/\d/.test(pwd)) score++;
-      else suggestions.push("建议加入数字");
-
-      if (/[\W_]/.test(pwd)) score++;
-      else suggestions.push("建议加入特殊符号（如 !@#）");
 
       if (pwd.length >= 12) score++;
 
       const lowerPwd = pwd.toLowerCase();
       const commonSeqs = ['1234', 'abcd', 'qwerty', 'asdf', 'zxcv', '1111', '0000'];
-      const weakPasswords = [
-        'password', '123456', '12345678', 'abc123', 'iloveyou',
-        'admin', 'administrator', 'anonymous'
-      ];
+      const weakPasswords = ['password', '123456', '12345678', 'abc123', 'iloveyou', 'admin', 'administrator', 'anonymous'];
 
       if (new Set(pwd).size <= 2 && pwd.length >= 6) {
         score = Math.min(score, 1);
-        suggestions.push("密码字符过于单一，容易被猜测");
+        suggestions.push("密码字符过于单一");
       }
 
       if (commonSeqs.some(seq => lowerPwd.includes(seq))) {
         score = Math.min(score, 1);
-        suggestions.push("避免使用常见顺序组合如 '1234' 或 'abcd'");
+        suggestions.push("避免常见顺序组合如 '1234'");
       }
 
       if (weakPasswords.includes(lowerPwd)) {
         score = 0;
-        suggestions.push("该密码已广泛使用，请更换");
+        suggestions.push("该密码过于常见");
       }
 
       const levels = ["极弱", "弱", "中等", "强", "很强", "极强", "变态"];
@@ -221,6 +214,26 @@
       suggestion.innerHTML = (score <= 3 && suggestions.length)
         ? "建议：" + suggestions.join("，")
         : "";
+
+      // === 熵与破解时间估算 ===
+      if (charsetSize === 0) charsetSize = 10;
+      const entropy = Math.round(pwd.length * Math.log2(charsetSize));
+      const guesses = Math.pow(2, entropy);
+      const guessesPerSec = 1e9; // 10亿次/秒
+      const seconds = guesses / guessesPerSec;
+
+      const formatTime = (s) => {
+        if (s < 1) return "小于 1 秒";
+        if (s < 60) return `${Math.floor(s)} 秒`;
+        if (s < 3600) return `${Math.floor(s / 60)} 分钟`;
+        if (s < 86400) return `${Math.floor(s / 3600)} 小时`;
+        if (s < 2592000) return `${Math.floor(s / 86400)} 天`;
+        if (s < 31536000) return `${Math.floor(s / 2592000)} 月`;
+        if (s < 31536000000) return `${Math.floor(s / 31536000)} 年`;
+        return `超过一亿年`;
+      };
+
+      entropyInfo.textContent = `熵：${entropy} bits ｜ 估算破解时间：${formatTime(seconds)}`;
     }
 
     function toggleVisibility() {
@@ -233,8 +246,14 @@
       checkStrength();
     }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark");
+    function copyPassword() {
+      const input = document.getElementById("password");
+      if (!input.value) return;
+      navigator.clipboard.writeText(input.value).then(() => {
+        const toast = document.getElementById("toast");
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2000);
+      });
     }
 
     checkStrength(); // 初始化

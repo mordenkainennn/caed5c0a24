@@ -1,24 +1,98 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <title>在线工具箱</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工具宝 - 首页</title>
   <style>
-    body { font-family: sans-serif; padding: 2em; background: #f9f9f9; }
-    h1 { text-align: center; }
-    ul { max-width: 500px; margin: 2em auto; padding: 0; list-style: none; }
-    li { margin: 1em 0; background: #fff; padding: 1em; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    a { text-decoration: none; color: #3498db; font-size: 18px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f6f8fa;
+      color: #333;
+    }
+    header {
+      text-align: center;
+      padding: 2em 1em 1em;
+      background: #2c3e50;
+      color: white;
+      position: relative;
+    }
+    .back-home {
+      position: absolute;
+      left: 1em;
+      top: 1.5em;
+      font-size: 14px;
+    }
+    .back-home a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .back-home a:hover {
+      text-decoration: underline;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1em;
+      padding: 2em;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      padding: 1.2em;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .card h2 {
+      margin: 0 0 0.3em;
+      font-size: 18px;
+    }
+    .card p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin: 2em 0 1em;
+    }
   </style>
 </head>
 <body>
-  <h1>🧰 我的在线工具箱</h1>
-  <ul>
-    <li><a href="/wordcounter/">字数统计器</a></li>
-    <li><a href="/password-checker/">密码强度检测器</a></li>
-    <!-- 将来可以继续添加 -->
-    <!-- <li><a href="/qrcode/">二维码生成器</a></li> -->
-    <!-- <li><a href="/timer/">倒计时器</a></li> -->
-  </ul>
+  <header>
+    <div class="back-home"><a href="/">← 返回首页</a></div>
+    <h1>工具宝</h1>
+    <p>你的实用工具集合</p>
+  </header>
+
+  <main class="grid">
+    <a class="card" href="/wordcounter/">
+      <h2>字数统计器</h2>
+      <p>统计中英文字数、阅读时间、朗读时间</p>
+    </a>
+    <a class="card" href="/password-checker/">
+      <h2>密码强度检测器</h2>
+      <p>分析密码强度、破解难度与建议改进</p>
+    </a>
+  </main>
+
+  <footer>
+    工具宝 ｜ 多功能在线工具平台 ｜ © 2025 gongjupal.com
+  </footer>
 </body>
 </html>
