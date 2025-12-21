@@ -1,0 +1,131 @@
+{
+  "tools": [
+    {
+      "id": "password-checker",
+      "title": "密码强度检测器",
+      "description": "zxcvbn + 熵值双轨评分，提供中/英可解释反馈与改进建议。",
+      "tags": [
+        "安全",
+        "密码",
+        "隐私"
+      ],
+      "path": "/password-checker/",
+      "deployable": false,
+      "type": "tool",
+      "order": 1,
+      "repo": "https://github.com/yourname/toolbox/password-checker",
+      "last_updated": "2025-11-21"
+    },
+    {
+      "id": "password-generator",
+      "title": "密码生成器",
+      "description": "强大的密码生成工具，支持多种密码类型和自定义选项。",
+      "tags": [
+        "安全",
+        "密码",
+        "工具"
+      ],
+      "path": "/password-generator/",
+      "deployable": false,
+      "type": "tool",
+      "order": 2,
+      "repo": "https://github.com/yourname/toolbox/password-generator",
+      "last_updated": "2025-10-11"
+    },
+    {
+      "id": "colors",
+      "title": "调色板工具",
+      "description": "在线调色板工具，支持颜色选择、转换和搭配。",
+      "tags": [
+        "设计",
+        "颜色",
+        "工具"
+      ],
+      "path": "/colors/",
+      "deployable": true,
+      "type": "tool",
+      "order": 3,
+      "repo": "https://github.com/yourname/toolbox/colors",
+      "last_updated": "2025-09-15"
+    },
+    {
+      "id": "aqara-time-converter",
+      "title": "Aqara时间转换器",
+      "description": "Aqara摄像机时间戳到文件名的转换工具。",
+      "tags": [
+        "工具",
+        "转换",
+        "时间"
+      ],
+      "path": "/tools/aqara-time-converter/",
+      "deployable": false,
+      "type": "tool",
+      "order": 4,
+      "repo": "https://github.com/yourname/toolbox/aqara-time-converter",
+      "last_updated": "2025-07-15"
+    }
+  ],
+  "games": [
+    {
+      "id": "2048-clone",
+      "title": "2048（小游戏）",
+      "description": "经典滑动合并类数字益智游戏。",
+      "tags": [
+        "游戏",
+        "休闲"
+      ],
+      "path": "/2048/",
+      "deployable": false,
+      "type": "game",
+      "order": 1,
+      "repo": "https://github.com/yourname/toolbox/2048",
+      "last_updated": "2025-07-25"
+    },
+    {
+      "id": "snake",
+      "title": "贪吃蛇",
+      "description": "经典贪吃蛇游戏，支持多种难度和游戏模式。",
+      "tags": [
+        "游戏",
+        "休闲"
+      ],
+      "path": "/snake/",
+      "deployable": false,
+      "type": "game",
+      "order": 2,
+      "repo": "https://github.com/yourname/toolbox/snake",
+      "last_updated": "2025-09-21"
+    },
+    {
+      "id": "fibomerge",
+      "title": "斐波那契2048",
+      "description": "基于斐波那契数列的2048变体游戏。",
+      "tags": [
+        "游戏",
+        "休闲",
+        "数学"
+      ],
+      "path": "/fibomerge/",
+      "deployable": false,
+      "type": "game",
+      "order": 3,
+      "repo": "https://github.com/yourname/toolbox/fibomerge",
+      "last_updated": "2025-07-15"
+    },
+    {
+      "id": "wordpuzzle",
+      "title": "找单词游戏",
+      "description": "根据不同词库产生难度，可离线运行，适合儿童与语言学习者。",
+      "tags": [
+        "游戏",
+        "英语"
+      ],
+      "path": "/edu/word-puzzle/",
+      "deployable": false,
+      "type": "game",
+      "order": 4,
+      "repo": "https://github.com/yourname/toolbox/wordpuzzle",
+      "last_updated": "2025-07-01"
+    }
+  ]
+}

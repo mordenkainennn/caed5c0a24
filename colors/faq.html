@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见问题 - 在线调色板</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--container-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .faq-question {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .faq-answer p {
+            margin: 0 0 10px 0;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .faq-answer code {
+            background-color: #e9e9e9;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: "SF Mono", "Consolas", "Menlo", monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="logo-area">
+            <a href="index.html" class="nav-btn">
+                <i class="fas fa-arrow-left"></i>
+                返回调色板工具
+            </a>
+        </div>
+    </div>
+
+    <div class="faq-container">
+        <h1>常见问题 (FAQ)</h1>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q1: 这个工具是做什么的?</h3>
+            <div class="faq-answer">
+                <p>这是一个免费、轻量化的在线调色板和颜色选择器工具，旨在帮助网页设计师和前端开发者快速选择、转换和获取网页颜色代码。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q2: 如何选取颜色?</h3>
+            <div class="faq-answer">
+                <p>您有多种方式选取颜色：</p>
+                <ul>
+                    <li><strong>点击选色</strong>: 直接用鼠标点击上方的240色颜色矩阵，或下方的灰度条。</li>
+                    <li><strong>直接输入</strong>: 在HEX, RGB, HSL输入框中，直接键入或粘贴您已知的颜色代码，然后按回车即可。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q3: 什么是 HEX, RGB, HSL? 我应该用哪一个?</h3>
+            <div class="faq-answer">
+                <p>它们是CSS中定义颜色的三种不同方式：</p>
+                <ul>
+                    <li><strong>HEX (十六进制)</strong>: 格式为 <code>#RRGGBB</code>。这是最经典、最通用的网页颜色代码，兼容性最好。</li>
+                    <li><strong>RGB (红绿蓝)</strong>: 格式为 <code>rgb(255, 255, 255)</code>。它更直观，并且在需要用JavaScript动态修改颜色时更方便。</li>
+                    <li><strong>HSL (色相,饱和度,亮度)</strong>: 格式为 <code>hsl(360, 100%, 100%)</code>。它的优点是调整颜色非常方便，例如，只需改变最后一个值（亮度）就可以获得同一颜色的不同深浅变体。</li>
+                </ul>
+                <p>您可以根据您的具体需求和使用场景，复制任意一种格式的代码。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q4: "专业模式"有什么用?</h3>
+            <div class="faq-answer">
+                <p>“专业模式”是为需要处理<strong>透明度 (Alpha)</strong> 的高级用户设计的。开启后，会出现一个Alpha滑块和输入框。</p>
+                <p>Alpha值决定了颜色的不透明度，<code>1</code> 代表完全不透明，<code>0</code> 代表完全透明。开启此模式后，您可以获得带透明通道的 <strong>RGBA</strong> 或 <strong>HSLA</strong> 颜色值，例如 <code>rgba(255, 99, 71, 0.5)</code>。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q5: 如何精确输入透明度?</h3>
+            <div class="faq-answer">
+                <p>在“专业模式”下，您可以通过以下方式精确控制透明度：</p>
+                <ul>
+                    <li><strong>滑块拖动</strong>: 拖动Alpha滑块进行大致范围的选择。</li>
+                    <li><strong>直接输入</strong>: 在滑块旁边的输入框中，可以直接输入小数 (如 <code>0.75</code>) 或百分比 (如 <code>75%</code>)。</li>
+                    <li><strong>键盘微调</strong>: 当焦点在Alpha输入框时，可以使用键盘的 <code>↑</code> 和 <code>↓</code> 方向键进行 0.01 步长的精确调整。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q6: 历史记录功能如何使用?</h3>
+            <div class="faq-answer">
+                <p>工具会自动保存您最近使用过的8种颜色（包括透明度）。</p>
+                <ul>
+                    <li><strong>重用颜色</strong>: 直接点击历史记录中的颜色块，即可快速应用该颜色。</li>
+                    <li><strong>清除记录</strong>: 点击“历史记录”标题右侧的垃圾桶图标，可以一键清除所有记录。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q7: 如何复制颜色代码?</h3>
+            <div class="faq-answer">
+                <p>在每个颜色输入框（HEX, RGB, HSL）的右侧都有一个复制图标 <i class="fa-regular fa-copy"></i>。点击它，即可将对应格式的颜色代码复制到剪贴板。复制成功后，图标会短暂变为一个绿色的对勾 <i class="fa-solid fa-check" style="color: #28a745;"></i> 作为提示。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q8: 对比度检查器是做什么用的？</h3>
+            <div class="faq-answer">
+                <p>对比度检查器是一个<strong>网页无障碍 (Accessibility)</strong> 设计辅助工具。它帮助您确保所选颜色与背景色之间有足够的对比度，从而让视力障碍用户也能清晰地阅读文本。</p>
+                <p>它会实时计算当前颜色（已混合透明度）在白、黑、灰三种背景下的对比度，并根据国际通用的 <strong>WCAG 2.1</strong> 标准给出评级：</p>
+                <ul>
+                    <li><strong>AAA (增强)</strong>: 最高标准，可用于任何大小的文本。</li>
+                    <li><strong>AA (主流)</strong>: 主流标准，适用于大多数网站的正文文本。</li>
+                    <li><strong>Fail (不通过)</strong>: 对比度不足，应避免在正文中使用。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <h3 class="faq-question">Q9: 我可以只用键盘操作这个工具吗？</h3>
+            <div class="faq-answer">
+                <p>可以。本工具为专业用户提供了完整的键盘导航支持：</p>
+                <ul>
+                    <li><strong>Tab键</strong>: 在不同的功能区（色板、滑块、输入框等）之间跳转。</li>
+                    <li><strong>方向键 (↑↓←→)</strong>: 在240色矩阵中移动选框。</li>
+                    <li><strong>Home/End</strong>: 跳转到当前行的行首/行尾。</li>
+                    <li><strong>PageUp/PageDown</strong>: 跳转到第一行/最后一行。</li>
+                    <li><strong>回车/空格</strong>: 确认选择当前高亮的颜色。</li>
+                    <li>在Alpha输入框中，还可以使用 <strong>↑/↓</strong> 键微调透明度。</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

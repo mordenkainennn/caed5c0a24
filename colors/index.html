@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a2a6c">
+    <title>免费在线调色板 (Color Picker) | 工具宝</title>
+    <meta name="description" content="免费在线调色板、颜色选择器。轻松选择颜色，获取RGB、HEX、HSL值。包含一个20x12的颜色矩阵和一个灰度选择条。">
+    <meta name="keywords" content="调色板, 颜色选择器, color picker, 在线工具, HEX, RGB, HSL, 网页设计, 前端开发, 颜色代码">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "在线调色板 - Color Picker",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Web",
+      "description": "免费在线调色板、颜色选择器。轻松选择颜色，获取RGB、HEX、HSL值。支持实时预览和一键复制。",
+      "author": {
+        "@type": "Organization",
+        "name": "工具宝"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "gongjupal.com"
+      }
+    }
+    </script>
+</head>
+
+<body>
+    <div class="above-the-fold">
+        <!-- 顶部导航栏 -->
+        <div class="top-bar">
+            <div class="logo-area">
+                <a href="../../index.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    返回首页
+                </a>
+            </div>
+        </div>
+
+        <main class="container">
+            <h1>在线调色板</h1>
+            <h2>点击方格选取颜色，或直接输入 HEX / RGB / HSL 值</h2>
+
+            <div class="pro-mode-switch-container">
+                <label for="pro-mode-toggle" class="pro-mode-label">专业模式 (Alpha)</label>
+                <label class="switch">
+                    <input type="checkbox" id="pro-mode-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div id="color-grid" class="color-grid"></div>
+            <div id="gray-scale" class="gray-scale" tabindex="-1"></div>
+
+            <div id="alpha-container" class="alpha-container" style="display: none;">
+                <div id="alpha-slider-track">
+                    <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="1">
+                </div>
+                <div class="alpha-value-container">
+                    <input type="text" id="alpha-value-input" class="alpha-value-input" value="1.00" maxlength="5"
+                        aria-label="Alpha透明度值">
+                    <button id="alpha-format-toggle" class="alpha-format-toggle" title="切换显示格式">%</button>
+                </div>
+            </div>
+
+            <div id="contrast-checker" class="contrast-checker" style="display: none;">
+                <h4>对比度检查</h4>
+                <div class="contrast-samples">
+                    <div class="contrast-sample" data-bg="white">
+                        <div class="sample-preview" style="background-color: white;">
+                            <div class="sample-text">Aa</div>
+                        </div>
+                        <div class="sample-info">
+                            <span class="bg-label">白底</span>
+                            <span class="contrast-ratio">-</span>
+                            <span class="contrast-rating"></span>
+                        </div>
+                    </div>
+                    <div class="contrast-sample" data-bg="black">
+                        <div class="sample-preview" style="background-color: black;">
+                            <div class="sample-text">Aa</div>
+                        </div>
+                        <div class="sample-info">
+                            <span class="bg-label">黑底</span>
+                            <span class="contrast-ratio">-</span>
+                            <span class="contrast-rating"></span>
+                        </div>
+                    </div>
+                    <div class="contrast-sample" data-bg="gray">
+                        <div class="sample-preview" style="background-color: #767676;">
+                            <div class="sample-text">Aa</div>
+                        </div>
+                        <div class="sample-info">
+                            <span class="bg-label">灰底</span>
+                            <span class="contrast-ratio">-</span>
+                            <span class="contrast-rating"></span>
+                        </div>
+                    </div>
+                    <div class="contrast-sample" data-bg="custom">
+                        <div class="sample-preview" style="background-color: #808080;">
+                            <div class="sample-text">Aa</div>
+                        </div>
+                        <div class="sample-info">
+                            <label for="custom-bg-color-input" class="bg-label">自定义</label>
+                            <input type="color" id="custom-bg-color-input" value="#808080" class="custom-bg-input"
+                                aria-label="自定义背景色">
+                            <span class="contrast-ratio">-</span>
+                            <span class="contrast-rating"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="history-section">
+                <div class="history-header">
+                    <h4>历史记录</h4>
+                    <button id="clear-history-btn" class="clear-btn" title="清除历史记录" aria-label="清除所有历史记录">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+                <div id="history-container" class="history-container"></div>
+            </section>
+
+            <div class="controls">
+                <div class="preview-container">
+                    <div id="color-preview"></div>
+                    <button id="eyedropper-btn" class="eyedropper-btn hidden" title="使用取色器从屏幕取色"
+                        aria-label="使用取色器从屏幕取色">
+                        <i class="fa-solid fa-eye-dropper"></i>
+                    </button>
+                </div>
+                <div class="color-values">
+                    <div class="color-value-row">
+                        <label for="hex-input">HEX</label>
+                        <input type="text" id="hex-input" autocomplete="off" placeholder="#FFFFFF">
+                        <button id="copy-hex" class="copy-btn" title="复制HEX" aria-label="复制HEX颜色值"><i
+                                class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <div class="color-value-row">
+                        <label for="rgb-input">RGB</label>
+                        <input type="text" id="rgb-input" autocomplete="off" placeholder="rgb(255, 255, 255)">
+                        <button id="copy-rgb" class="copy-btn" title="复制RGB" aria-label="复制RGB颜色值"><i
+                                class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <div class="color-value-row">
+                        <label for="hsl-input">HSL</label>
+                        <input type="text" id="hsl-input" autocomplete="off" placeholder="hsl(0, 0%, 100%)">
+                        <button id="copy-hsl" class="copy-btn" title="复制HSL" aria-label="复制HSL颜色值"><i
+                                class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <section class="tool-description">
+        <h3>关于在线调色板及其使用方法</h3>
+        <p>本页面提供的是一款免费且高效的<strong>在线调色板工具</strong>，专为网页设计师、前端开发者和任何需要与颜色打交道的朋友设计。无论您是需要为新项目寻找配色灵感，还是想快速进行<strong>颜色代码转换</strong>，这里都能满足您的需求。我们支持最常见的网页颜色格式，包括
+            HEX、RGB 和 HSL。</p>
+        <p>如何使用这个<strong>颜色选择器</strong>？您可以通过点击上方的240色矩阵或下方的灰度条来快速选色。对于更精确的需求，可以直接在输入框中输入或粘贴任何有效的颜色代码（如
+            <code>#FF5733</code>、<code>rgb(255, 87, 51)</code> 或
+            <code>hsl(12, 100%, 60%)</code>），工具会立即进行<strong>HEX转RGB在线换算</strong>并同步显示所有值。
+        </p>
+
+        <h4>专业特性，提升效率</h4>
+        <p>我们不仅提供基础功能，更致力于提升您的工作效率。开启“<strong>专业模式</strong>”后，您可以解锁一系列高级功能：</p>
+        <ul>
+            <li><strong>Alpha 透明度</strong>: 精确调整颜色的透明度，获取 <strong>RGBA</strong> 和 <strong>HSLA</strong>
+                值，并支持小数或百分比格式的直接输入与键盘微调。</li>
+            <li><strong>颜色对比度检查器</strong>: 这是确保网站<strong>无障碍访问 (Accessibility)</strong> 的关键工具。它会实时计算当前颜色在不同背景下的对比度，并根据
+                <strong>WCAG</strong> 标准给出 AA / AAA 评级，帮助您创建清晰易读的设计。
+            </li>
+            <li><strong>历史记录</strong>: 工具会自动保存您最近使用过的颜色，方便您随时调用和比较。</li>
+            <li><strong>全键盘操作</strong>: 您可以仅使用键盘（方向键、Home/End等）在色板上导航和选择，实现流畅无阻的工作流。</li>
+        </ul>
+        <p>当您找到心仪的颜色后，只需点击每个格式右侧的复制按钮，即可轻松获取<strong>CSS颜色代码</strong>，并将其用于您的项目。希望能帮助您提升工作效率。</p>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>工具宝 ｜ 在线调色板 V4.4 ｜ © 2025 gongjupal.com</p>
+        <div class="footer-links">
+            <a href="faq.html" target="_blank"><i class="fa-solid fa-circle-question"></i> 常见问题</a>
+            <a href="../../privacy.html" target="_blank"><i class="fas fa-shield-alt"></i> 隐私政策</a>
+            <a id="contact-link"> <i class="fa-solid fa-envelope"></i> 联系我们</a>
+        </div>
+    </footer>
+
+    <div id="toast-notification"></div>
+    <script src="script.js" defer></script>
+</body>
+
+</html>

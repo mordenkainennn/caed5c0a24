@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a2a6c">
+    <title>免费在线调色板 (Color Picker) | 工具宝</title>
+    <meta name="description" content="免费在线调色板、颜色选择器。轻松选择颜色，获取RGB、HEX、HSL值。包含一个20x12的颜色矩阵和一个灰度选择条。">
+    <meta name="keywords" content="调色板, 颜色选择器, color picker, 在线工具, HEX, RGB, HSL, 网页设计, 前端开发, 颜色代码">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --container-bg: #f9f9f9;
+            --border-color: #e0e0e0;
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --input-bg: #ffffff;
+            --input-border: #ccc;
+            --header-height: 50px;
+            --footer-height: 90px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .above-the-fold {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            height: var(--header-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            background-color: var(--primary-color);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .top-bar a,
+        .top-bar button {
+            color: white;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .top-bar a:hover,
+        .top-bar button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--container-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: var(--text-color);
+            flex-shrink: 0;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.2em;
+            font-weight: normal;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 2px;
+            flex-grow: 1;
+        }
+
+        .gray-scale {
+            margin: 15px auto;
+            max-width: 400px;
+            width: 100%;
+            height: 25px;
+            cursor: pointer;
+            border-radius: 3px;
+            background: linear-gradient(to right, #ffffff, #000000);
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .color-box {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: transform 0.1s;
+        }
+
+        .color-box:hover {
+            transform: scale(1.1);
+            border: 1px solid var(--text-color);
+            z-index: 10;
+            position: relative;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-top: 15px;
+            flex-shrink: 0;
+        }
+
+        #color-preview {
+            width: 88px;
+            height: 88px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .color-values {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .color-value-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-value-row label {
+            font-weight: bold;
+            font-size: 14px;
+            width: 35px;
+            color: #555;
+        }
+
+        .color-value-row input {
+            font-family: "SF Mono", "Consolas", "Menlo", monospace;
+            padding: 5px 8px;
+            font-size: 14px;
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            width: 170px;
+            height: 28px;
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        .color-value-row input[readonly] {
+            background-color: #f1f1f1;
+            cursor: default;
+            color: #555;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+            border-radius: 5px;
+            color: #777;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: #e9e9e9;
+            color: #000;
+        }
+
+        footer {
+            height: var(--footer-height);
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f2f2f2;
+            color: #666;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .footer-links {
+            margin-top: 10px;
+        }
+
+        .footer-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .tool-description {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--container-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .tool-description h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #444;
+            text-align: left;
+        }
+
+        .tool-description p {
+            margin: 0 0 10px 0;
+        }
+
+        .tool-description p:last-child {
+            margin-bottom: 0;
+        }
+
+        .tool-description code {
+            background-color: #e9e9e9;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: "SF Mono", "Consolas", "Menlo", monospace;
+        }
+
+        /* Styles for PC (large screens) */
+        @media (min-width: 1024px) {
+            .container {
+                width: 60vw;
+                max-width: none;
+                margin: 2vh auto;
+                padding: 20px;
+            }
+
+            .color-grid {
+                grid-template-rows: repeat(12, 1fr);
+                gap: 4px;
+            }
+
+            .tool-description {
+                width: 60vw;
+                max-width: none;
+                margin: 2vh auto;
+            }
+        }
+
+        /* Styles for mobile (small screens) */
+        @media (max-width: 1023px) {
+
+            html,
+            body {
+                height: auto;
+                overflow: auto;
+            }
+
+            .color-box {
+                padding-bottom: 100%;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "在线调色板 - Color Picker",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Web",
+      "description": "免费在线调色板、颜色选择器。轻松选择颜色，获取RGB、HEX、HSL值。支持实时预览和一键复制。",
+      "author": {
+        "@type": "Organization",
+        "name": "工具宝"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "gongjupal.com"
+      }
+    }
+    </script>
+</head>
+
+<body>
+    <div class="above-the-fold">
+        <!-- 顶部导航栏 -->
+        <div class="top-bar">
+            <div class="logo-area">
+                <a href="../../index.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    返回首页
+                </a>
+            </div>
+        </div>
+
+        <main class="container">
+            <h1>在线调色板</h1>
+            <h2>点击方格选取颜色，或直接输入 HEX / RGB / HSL 值</h2>
+
+            <div id="color-grid" class="color-grid"></div>
+            <div id="gray-scale" class="gray-scale"></div>
+
+            <div class="controls">
+                <div id="color-preview"></div>
+                <div class="color-values">
+                    <div class="color-value-row">
+                        <label for="hex-input">HEX</label>
+                        <input type="text" id="hex-input" autocomplete="off" placeholder="#FFFFFF">
+                        <button id="copy-hex" class="copy-btn" title="复制HEX" aria-label="复制HEX颜色值"><i
+                                class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <div class="color-value-row">
+                        <label for="rgb-input">RGB</label>
+                        <input type="text" id="rgb-input" autocomplete="off" placeholder="rgb(255, 255, 255)">
+                        <button id="copy-rgb" class="copy-btn" title="复制RGB" aria-label="复制RGB颜色值"><i
+                                class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <div class="color-value-row">
+                        <label for="hsl-input">HSL</label>
+                        <input type="text" id="hsl-input" autocomplete="off" placeholder="hsl(0, 0%, 100%)">
+                        <button id="copy-hsl" class="copy-btn" title="复制HSL" aria-label="复制HSL颜色值"><i
+                                class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>工具宝 ｜ 在线调色板 V2.2 ｜ © 2025 gongjupal.com</p>
+            <div class="footer-links">
+                <a href="../../privacy.html" target="_blank"><i class="fas fa-shield-alt"></i> 隐私政策</a>
+                <script>
+                    const user = "feedback";
+                    const domain = "gongjupal.com";
+                    const email = `${user}@${domain}`;
+                    document.write(`<a href="mailto:${email}"> <i class="fa-solid fa-envelope"></i> 联系我们</a>`);
+                </script>
+            </div>
+        </footer>
+    </div>
+
+    <section class="tool-description">
+        <h3>关于在线调色板及其使用方法</h3>
+        <p>本页面提供的是一款免费且高效的<strong>在线调色板工具</strong>，专为网页设计师、前端开发者和任何需要与颜色打交道的朋友设计。无论您是需要为新项目寻找配色灵感，还是想快速进行<strong>颜色代码转换</strong>，这里都能满足您的需求。我们支持最常见的三种网页颜色格式：HEX、RGB
+            和 HSL。</p>
+        <p>如何使用这个<strong>颜色选择器</strong>？非常简单。您可以通过直接点击上方的20x12彩色矩阵来快速选择一个基准颜色，或在下方的灰度条上选取不同亮度的灰色。对于更精确的需求，您可以直接在输入框中输入或粘贴任何有效的颜色代码，例如
+            <code>#FF5733</code>、<code>rgb(255, 87, 51)</code> 或
+            <code>hsl(12, 100%, 60%)</code>。工具会立即进行<strong>HEX转RGB在线换算</strong>，并同步显示所有三种格式的数值。
+        </p>
+        <p>当您找到心仪的颜色后，只需点击每个格式右侧的复制按钮，即可轻松获取<strong>CSS颜色代码</strong>，并将其用于您的项目。这个工具是您进行<strong>前端开发</strong>或UI设计时的得力助手，希望能帮助您提升工作效率。
+        </p>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const colorGrid = document.getElementById('color-grid');
+            const grayScale = document.getElementById('gray-scale');
+            const colorPreview = document.getElementById('color-preview');
+
+            const hexInput = document.getElementById('hex-input');
+            const rgbInput = document.getElementById('rgb-input');
+            const hslInput = document.getElementById('hsl-input');
+
+            const copyHexBtn = document.getElementById('copy-hex');
+            const copyRgbBtn = document.getElementById('copy-rgb');
+            const copyHslBtn = document.getElementById('copy-hsl');
+
+            const COLS = 20;
+            const ROWS = 12;
+
+            // --- Color Conversion Helpers ---
+            function rgbStringToHex(rgb) {
+                const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                if (!match) return rgb;
+                function toHex(c) {
+                    const hex = parseInt(c, 10).toString(16);
+                    return hex.length == 1 ? "0" + hex : hex;
+                }
+                return ("#" + toHex(match[1]) + toHex(match[2]) + toHex(match[3])).toUpperCase();
+            }
+
+            function rgbToHsl(r, g, b) {
+                r /= 255, g /= 255, b /= 255;
+                let max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0; // achromatic
+                } else {
+                    let d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+            }
+
+            function updateColor(color) {
+                const test = document.createElement('div');
+                try {
+                    document.body.appendChild(test);
+                    test.style.backgroundColor = color;
+                    if (test.style.backgroundColor === '') return;
+
+                    const computedColor = window.getComputedStyle(test).backgroundColor;
+                    colorPreview.style.backgroundColor = computedColor;
+
+                    const match = computedColor.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
+                    if (match) {
+                        const r = parseInt(match[1]);
+                        const g = parseInt(match[2]);
+                        const b = parseInt(match[3]);
+                        const rgbString = `rgb(${r}, ${g}, ${b})`;
+
+                        hexInput.value = rgbStringToHex(rgbString);
+                        rgbInput.value = rgbString;
+                        const [h, s, l] = rgbToHsl(r, g, b);
+                        hslInput.value = `hsl(${h}, ${s}%, ${l}%)`;
+                    }
+                } catch (e) {
+                    console.error("Invalid color value:", e);
+                } finally {
+                    if (test.parentNode) document.body.removeChild(test);
+                }
+            }
+
+            // --- Grid Generation ---
+            function generateColorGrid() {
+                for (let i = 0; i < ROWS; i++) {
+                    for (let j = 0; j < COLS; j++) {
+                        const box = document.createElement('div');
+                        box.classList.add('color-box');
+
+                        const hue = (j / (COLS - 1)) * 360;
+                        const lightness = 95 - (i / (ROWS - 1)) * 75;
+                        const saturation = 85;
+                        const hslString = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+
+                        box.style.backgroundColor = hslString;
+                        box.setAttribute('role', 'button');
+                        box.setAttribute('tabindex', '0');
+                        box.setAttribute('aria-label', `颜色: ${hslString}`);
+
+                        colorGrid.appendChild(box);
+                    }
+                }
+            }
+
+            // --- Event Handlers ---
+            function copyToClipboard(text, button) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalIcon = button.innerHTML;
+                    button.innerHTML = '<i class="fa-solid fa-check" style="color: #28a745;"></i>';
+                    setTimeout(() => {
+                        button.innerHTML = originalIcon;
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            }
+
+            colorGrid.addEventListener('click', (event) => {
+                if (event.target.classList.contains('color-box')) {
+                    updateColor(event.target.style.backgroundColor);
+                }
+            });
+
+            colorGrid.addEventListener('keydown', (event) => {
+                if (event.target.classList.contains('color-box') && (event.key === 'Enter' || event.key === ' ')) {
+                    event.preventDefault(); // Prevent space from scrolling the page
+                    updateColor(event.target.style.backgroundColor);
+                }
+            });
+
+            grayScale.addEventListener('click', (event) => {
+                const rect = event.target.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(1, x / event.target.offsetWidth));
+                const grayValue = Math.round(255 * (1 - percentage));
+                updateColor(`rgb(${grayValue}, ${grayValue}, ${grayValue})`);
+            });
+
+            hexInput.addEventListener('input', (event) => {
+                updateColor(event.target.value.trim());
+            });
+
+            rgbInput.addEventListener('input', (event) => {
+                updateColor(event.target.value.trim());
+            });
+
+            hslInput.addEventListener('input', (event) => {
+                updateColor(event.target.value.trim());
+            });
+
+            copyHexBtn.addEventListener('click', () => copyToClipboard(hexInput.value, copyHexBtn));
+            copyRgbBtn.addEventListener('click', () => copyToClipboard(rgbInput.value, copyRgbBtn));
+            copyHslBtn.addEventListener('click', () => copyToClipboard(hslInput.value, copyHslBtn));
+
+            // --- Initialization ---
+            generateColorGrid();
+            updateColor('#FFFFFF');
+        });
+    </script>
+</body>
+
+</html>

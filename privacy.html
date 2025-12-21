@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="工具宝（Gongjupal.com）隐私政策 - 我们重视用户隐私和数据安全，承诺不收集个人身份信息，所有功能在浏览器本地执行。">
+    <title>隐私政策 - 工具宝(Gongjupal.com)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #7f8c8d;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: #f5f7fa;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), #1a2530);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        ul {
+            padding-left: 25px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .highlight {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .contact-section {
+            background-color: rgba(231, 76, 60, 0.05);
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .contact-icon {
+            background-color: var(--accent-color);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .update-date {
+            text-align: right;
+            font-style: italic;
+            color: var(--light-text);
+            margin-top: 30px;
+            font-size: 0.95rem;
+        }
+        
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .copyright {
+            font-size: 0.95rem;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            margin-left: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-shield-alt"></i> 隐私政策</h1>
+            <p>我们非常重视用户的隐私和数据安全。本政策说明了工具宝如何收集和处理数据，以及我们对用户隐私的承诺。</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- 简介部分 -->
+        <section class="card">
+            <p>欢迎使用工具宝（Gongjupal.com）。我们致力于为用户提供安全、便捷的在线工具服务，同时严格保护您的隐私。本隐私政策将向您说明我们在网站使用过程中处理数据的方式。</p>
+            <div class="highlight">
+                <p><strong>核心原则：</strong> 工具宝是纯前端工具平台，所有功能均在您的浏览器本地执行。我们不会收集、存储或传输您的个人数据到任何服务器。</p>
+            </div>
+        </section>
+        
+        <!-- 不会收集的内容 -->
+        <section class="card">
+            <h2>一、我们不会收集的内容</h2>
+            <p>我们承诺不会主动收集、存储或共享您的任何个人身份信息，包括但不限于：</p>
+            <ul>
+                <li>姓名、邮箱地址、电话号码等个人身份信息</li>
+                <li>您使用工具时输入的任何文本内容</li>
+                <li>IP地址、地理位置信息或设备标识符</li>
+                <li>访问历史、使用行为或操作记录</li>
+            </ul>
+        </section>
+        
+        <!-- 数据处理说明 -->
+        <section class="card">
+            <h2>二、数据处理说明</h2>
+            <p>工具宝是一个完全在客户端运行的前端工具平台：</p>
+            <ul>
+                <li>所有工具功能均在您的浏览器本地执行，无需与服务器交互</li>
+                <li>您输入的文本内容仅存在于浏览器内存中，不会上传到任何服务器</li>
+                <li>当您关闭页面或刷新浏览器时，所有临时数据将自动清除</li>
+                <li>我们不会在您的设备上存储任何包含用户数据的cookie</li>
+            </ul>
+        </section>
+        
+        <!-- 第三方服务 -->
+        <section class="card">
+            <h2>三、第三方服务</h2>
+            <p>为提供更好的用户体验，我们使用了以下第三方服务：</p>
+            <ul>
+                <li><strong>Font Awesome / Google Fonts</strong> - 用于图标与字体展示</li>
+                <li><strong>Cloudflare Pages</strong> - 用于网站托管与全球内容加速</li>
+                <li><strong>Cloudflare Web Analytics</strong> - 用于统计整体访问量（不追踪个人身份）</li>
+            </ul>
+            <div class="highlight">
+                <p><strong>重要承诺：</strong> 我们保证不会在网站中嵌入任何广告追踪代码或第三方cookie。所有第三方服务都经过严格筛选，确保符合我们的隐私标准。</p>
+            </div>
+        </section>
+        
+        <!-- 外部链接 -->
+        <section class="card">
+            <h2>四、外部链接</h2>
+            <p>我们的网站可能包含指向其他站点的链接（例如捐赠平台、社交媒体等）。请注意：</p>
+            <ul>
+                <li>这些外部站点有独立的隐私政策</li>
+                <li>我们对这些站点的内容和隐私做法不承担责任</li>
+                <li>在提供个人信息前，请查阅这些站点的隐私政策</li>
+            </ul>
+        </section>
+        
+        <!-- 用户权利 -->
+        <section class="card">
+            <h2>五、您的权利</h2>
+            <p>由于我们不收集任何用户身份数据：</p>
+            <ul>
+                <li>您无需注册或登录即可使用全部功能</li>
+                <li>不存在账户删除或数据访问请求的必要</li>
+                <li>您无需担心个人信息泄露问题</li>
+            </ul>
+            <p>我们设计的系统从架构上避免了收集用户数据的可能性，为您提供真正安心的使用体验。</p>
+        </section>
+        
+        <!-- 政策更新 -->
+        <section class="card">
+            <h2>六、政策更新</h2>
+            <p>本隐私政策可能会根据功能更新或法规变更进行调整：</p>
+            <ul>
+                <li>更新后的版本将发布在本页面上，恕不另行通知</li>
+                <li>重大变更将在网站公告栏公示30天</li>
+                <li>我们建议您定期查看本页面以了解最新政策</li>
+            </ul>
+            <div class="update-date">
+                <p>最后更新日期: 2025年6月15日</p>
+            </div>
+        </section>
+        
+        <!-- 联系我们 -->
+        <section class="card contact-section">
+            <h2>七、联系我们</h2>
+            <p></p>
+            <div class="contact-info">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                    <script>
+                       const user = "feedback";
+                       const domain = "gongjupal.com";
+                       const email = `${user}@${domain}`;
+                       document.write(`<a href="mailto:${email}">${email}</a>`);
+                    </script>
+                    <p></p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">
+                &copy; 2023 工具宝(Gongjupal.com) 版权所有
+            </div>
+            <div class="footer-links">
+                <a href="/">首页</a>
+                <a href="/terms.html">使用条款</a>
+                <a href="/contact.html">联系我们</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
